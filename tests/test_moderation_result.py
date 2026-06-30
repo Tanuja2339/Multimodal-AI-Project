@@ -209,3 +209,101 @@ class TestAudioModerationResult:
         """Verify all fields are required"""
         with pytest.raises(ValidationError, match="transcription|contains_pii|is_unfriendly|is_unprofessional"):
             AudioModerationResult(rationale="Test", transcription="Test")
+
+
+class TestTextModerationResultIsFlagged:
+    """Test the is_flagged computed property on TextModerationResult"""
+
+    def test_is_flagged_true_when_any_flag_true(self):
+        """Verify is_flagged is True when at least one flag is True"""
+        result = TextModerationResult(
+            rationale="Contains PII",
+            contains_pii=True,
+            is_unfriendly=False,
+            is_unprofessional=False,
+        )
+        assert result.is_flagged is True, "is_flagged should be True when contains_pii is True"
+
+    def test_is_flagged_false_when_all_flags_false(self):
+        """Verify is_flagged is False when all flags are False"""
+        result = TextModerationResult(
+            rationale="All clear",
+            contains_pii=False,
+            is_unfriendly=False,
+            is_unprofessional=False,
+        )
+        assert result.is_flagged is False, "is_flagged should be False when no flags are set"
+
+
+class TestImageModerationResultIsFlagged:
+    """Test the is_flagged computed property on ImageModerationResult"""
+
+    def test_is_flagged_true_when_any_flag_true(self):
+        """Verify is_flagged is True when at least one flag is True"""
+        result = ImageModerationResult(
+            rationale="Disturbing content",
+            contains_pii=False,
+            is_disturbing=True,
+            is_low_quality=False,
+        )
+        assert result.is_flagged is True, "is_flagged should be True when is_disturbing is True"
+
+    def test_is_flagged_false_when_all_flags_false(self):
+        """Verify is_flagged is False when all flags are False"""
+        result = ImageModerationResult(
+            rationale="All clear",
+            contains_pii=False,
+            is_disturbing=False,
+            is_low_quality=False,
+        )
+        assert result.is_flagged is False, "is_flagged should be False when no flags are set"
+
+
+class TestVideoModerationResultIsFlagged:
+    """Test the is_flagged computed property on VideoModerationResult"""
+
+    def test_is_flagged_true_when_any_flag_true(self):
+        """Verify is_flagged is True when at least one flag is True"""
+        result = VideoModerationResult(
+            rationale="Low quality",
+            contains_pii=False,
+            is_disturbing=False,
+            is_low_quality=True,
+        )
+        assert result.is_flagged is True, "is_flagged should be True when is_low_quality is True"
+
+    def test_is_flagged_false_when_all_flags_false(self):
+        """Verify is_flagged is False when all flags are False"""
+        result = VideoModerationResult(
+            rationale="All clear",
+            contains_pii=False,
+            is_disturbing=False,
+            is_low_quality=False,
+        )
+        assert result.is_flagged is False, "is_flagged should be False when no flags are set"
+
+
+class TestAudioModerationResultIsFlagged:
+    """Test the is_flagged computed property on AudioModerationResult"""
+
+    def test_is_flagged_true_when_any_flag_true(self):
+        """Verify is_flagged is True when at least one flag is True"""
+        result = AudioModerationResult(
+            rationale="Unprofessional tone",
+            transcription="Test transcription",
+            contains_pii=False,
+            is_unfriendly=False,
+            is_unprofessional=True,
+        )
+        assert result.is_flagged is True, "is_flagged should be True when is_unprofessional is True"
+
+    def test_is_flagged_false_when_all_flags_false(self):
+        """Verify is_flagged is False when all flags are False"""
+        result = AudioModerationResult(
+            rationale="All clear",
+            transcription="Test transcription",
+            contains_pii=False,
+            is_unfriendly=False,
+            is_unprofessional=False,
+        )
+        assert result.is_flagged is False, "is_flagged should be False when no flags are set"
