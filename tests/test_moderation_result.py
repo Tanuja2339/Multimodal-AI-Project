@@ -75,10 +75,12 @@ class TestTextModerationResult:
         assert issubclass(TextModerationResult, ModerationResult), \
             "TextModerationResult should inherit from ModerationResult"
 
-    def test_all_fields_are_required(self):
-        """Verify all fields are required"""
-        with pytest.raises(ValidationError, match="contains_pii|is_unfriendly|is_unprofessional"):
-            TextModerationResult(rationale="Test")
+    def test_flags_default_to_false(self):
+        """Verify flag fields default to False when not provided"""
+        result = TextModerationResult(rationale="Test")
+        assert result.contains_pii is False, "contains_pii should default to False"
+        assert result.is_unfriendly is False, "is_unfriendly should default to False"
+        assert result.is_unprofessional is False, "is_unprofessional should default to False"
 
 
 class TestImageModerationResult:
@@ -117,10 +119,12 @@ class TestImageModerationResult:
         assert issubclass(ImageModerationResult, ModerationResult), \
             "ImageModerationResult should inherit from ModerationResult"
 
-    def test_all_fields_are_required(self):
-        """Verify all fields are required"""
-        with pytest.raises(ValidationError, match="contains_pii|is_disturbing|is_low_quality"):
-            ImageModerationResult(rationale="Test")
+    def test_flags_default_to_false(self):
+        """Verify flag fields default to False when not provided"""
+        result = ImageModerationResult(rationale="Test")
+        assert result.contains_pii is False, "contains_pii should default to False"
+        assert result.is_disturbing is False, "is_disturbing should default to False"
+        assert result.is_low_quality is False, "is_low_quality should default to False"
 
 
 class TestVideoModerationResult:
@@ -159,10 +163,12 @@ class TestVideoModerationResult:
         assert issubclass(VideoModerationResult, ModerationResult), \
             "VideoModerationResult should inherit from ModerationResult"
 
-    def test_all_fields_are_required(self):
-        """Verify all fields are required"""
-        with pytest.raises(ValidationError, match="contains_pii|is_disturbing|is_low_quality"):
-            VideoModerationResult(rationale="Test")
+    def test_flags_default_to_false(self):
+        """Verify flag fields default to False when not provided"""
+        result = VideoModerationResult(rationale="Test")
+        assert result.contains_pii is False, "contains_pii should default to False"
+        assert result.is_disturbing is False, "is_disturbing should default to False"
+        assert result.is_low_quality is False, "is_low_quality should default to False"
 
 
 class TestAudioModerationResult:
@@ -205,10 +211,17 @@ class TestAudioModerationResult:
         assert issubclass(AudioModerationResult, ModerationResult), \
             "AudioModerationResult should inherit from ModerationResult"
 
-    def test_all_fields_are_required(self):
-        """Verify all fields are required"""
-        with pytest.raises(ValidationError, match="transcription|contains_pii|is_unfriendly|is_unprofessional"):
-            AudioModerationResult(rationale="Test", transcription="Test")
+    def test_transcription_is_required(self):
+        """Verify transcription field is still required (not a flag, no default)"""
+        with pytest.raises(ValidationError, match="transcription"):
+            AudioModerationResult(rationale="Test")
+
+    def test_flags_default_to_false(self):
+        """Verify flag fields default to False when not provided"""
+        result = AudioModerationResult(rationale="Test", transcription="Test transcription")
+        assert result.contains_pii is False, "contains_pii should default to False"
+        assert result.is_unfriendly is False, "is_unfriendly should default to False"
+        assert result.is_unprofessional is False, "is_unprofessional should default to False"
 
 
 class TestTextModerationResultIsFlagged:

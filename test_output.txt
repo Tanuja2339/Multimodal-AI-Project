@@ -5,13 +5,13 @@ configfile: pyproject.toml
 testpaths: tests
 plugins: anyio-4.11.0, logfire-4.13.2, asyncio-1.2.0
 asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
-collected 58 items
+collected 59 items
 
 tests/test_audio_agent.py .....                                          [  8%]
-tests/test_env_setup.py .....                                            [ 17%]
+tests/test_env_setup.py .....                                            [ 16%]
 tests/test_gradio_app.py .........                                       [ 32%]
-tests/test_image_agent.py ....                                           [ 39%]
-tests/test_moderation_result.py ...........................              [ 86%]
+tests/test_image_agent.py ....                                           [ 38%]
+tests/test_moderation_result.py ............................             [ 86%]
 tests/test_text_agent.py ....                                            [ 93%]
 tests/test_video_agent.py ....                                           [100%]
 
@@ -21,4 +21,4 @@ tests/test_env_setup.py:67
     @pytest.mark.integration
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 58 passed, 1 warning in 14.17s ========================
+======================== 59 passed, 1 warning in 12.02s ========================
